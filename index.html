@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+
+  <style>
+    /* ====== DIMENSÃO / IMPRESSÃO (A4) ====== */
+    @page{
+      size: A4;
+      margin: 25mm 20mm 20mm 20mm; /* padrão */
+    }
+
+    /* Ajuste da 1ª página (mantido) */
+    @page :first{
+      margin-top: 35mm;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      line-height: 1.5;
+      margin: 40px; /* tela */
+      color: #000;
+      background:#fff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .container{
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: justify;
+      position: relative;
+    }
+
+    /* ====== LOGO (SOMENTE 1ª PÁGINA) ======
+       Ajuste: sem top negativo no PRINT, para não ser cortada/ignorada.
+       Na tela, mantém como estava (top negativo) para ficar no lugar perfeito.
+    */
+    .brand-logo{
+      position: absolute;
+      left: 0;
+      top: -27mm;  /* mantém na tela */
+      width: 52mm;
+      height: auto;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* Espaço reservado no topo da 1ª página (não altera o texto, só garante área para a logo) */
+    .logo-spacer{
+      height: 0; /* na tela não precisa */
+    }
+
+    @media print{
+      body{ margin: 0; }
+      .container{ max-width: none; margin: 0; }
+      .print-bar{ display:none !important; }
+
+      /* No PRINT, NÃO use top negativo: coloca a logo dentro da área imprimível */
+      .brand-logo{
+        top: 0;      /* dentro do conteúdo impresso */
+        left: 0;
+      }
+
+      /* Reserva espaço real no topo da 1ª página para a logo não “brigar” com o título */
+      .logo-spacer{
+        height: 22mm; /* espaço aproximado da altura da logo */
+      }
+    }
+
+    /* ====== BOTÃO IMPRIMIR ====== */
+    .print-bar{
+      max-width: 800px;
+      margin: 0 auto 14px auto;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .btn-print{
+      border: 1px solid rgba(0,0,0,.25);
+      background: #fff;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: transform .05s ease, background .15s ease;
+    }
+    .btn-print:hover{ background: rgba(0,0,0,.04); }
+    .btn-print:active{ transform: scale(0.98); }
+
+    /* ====== FONTES (-1,0pt) ====== */
+    h1{
+      font-size: 12pt;
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-top: 0;
+      margin-bottom: 30px;
+    }
+
+    .section-title{
+      font-size: 10pt;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      text-decoration: underline;
+    }
+
+    .clause-title{
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    p{
+      font-size: 9pt;
+      margin-bottom: 12px;
+    }
+
+    .indent{ margin-left: 40px; }
+
+    .signature-line{
+      display: inline-block;
+      width: 45%;
+      border-top: 1px solid #000;
+      margin-top: 40px;
+      text-align: center;
+      font-size: 8pt;
+      vertical-align: top;
+    }
+
+    .signature-container{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    .witness-section{ margin-top: 40px; }
+
+    .witness-container{
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .witness-box{
+      width: 45%;
+      text-align: left;
+      font-size: 8pt;
+    }
+
+    .witness-line{
+      border-top: 1px solid #000;
+      margin-top: 30px;
+      margin-bottom: 5px;
+    }
+
+    /* 2ª página começa em "DAS RESPONSABILIDADES" */
+    .page-break-force{
+      page-break-before: always;
+      break-before: page;
+      height: 0;
+    }
+
+    .editable-field{
+      border-bottom: 1px solid #000;
+      display: inline;
+      outline: none;
+      color: blue;
+      cursor: text;
+    }
+
+    @media print{
+      .editable-field{
+        border-bottom: none;
+        color: #000;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- BOTÃO IMPRIMIR -->
+  <div class="print-bar">
+    <button class="btn-print" type="button" onclick="printContrato()">Imprimir</button>
+  </div>
+
+  <div class="container">
+    <!-- LOGO (somente 1ª página) -->
+    <img id="brandLogo" class="brand-logo" src="Logo SM para fundo Branco.png" alt="San Marino" />
+
+    <!-- Espaçador que só atua no PRINT para garantir área da logo -->
+    <div class="logo-spacer"></div>
+
+    <h1>INSTRUMENTO PARTICULAR DE COMPRA E VENDA DE VEÍCULO AUTOMOTOR</h1>
+
+    <p><strong>COMPRADORA: SAN MARINO VEÍCULOS LTDA.</strong>, inscrita no CNPJ sob o nº. 90.446.618/0001-72 e com endereço na Avenida Ipiranga, nº. 7.110, na cidade de Porto Alegre/ RS, nesse ato denominada de <strong>San Marino</strong>.</p>
+
+    <p><strong>VENDEDOR(A):</strong>
+      <span class="editable-field" contenteditable="true">VENDEDOR_NOME</span>, inscrito(a)
+      no CPF/CNPJ sob nº:
+      <span class="editable-field" contenteditable="true">VENDEDOR_CPF_CNPJ</span>, residente e domiciliado
+      no endereço:
+      <span class="editable-field" contenteditable="true">VENDEDOR_ENDERECO</span>, bairro:
+      <span class="editable-field" contenteditable="true">VENDEDOR_BAIRRO</span>, da Cidade de:
+      <span class="editable-field" contenteditable="true">VENDEDOR_CIDADE</span>, Estado:
+      <span class="editable-field" contenteditable="true">VENDEDOR_ESTADO</span>, CEP:
+      <span class="editable-field" contenteditable="true">VENDEDOR_CEP</span>.
+    </p>
+
+    <p>As Partes supra qualificadas, em comum acordo e por iniciativa mútua, celebram, neste ato, o presente Instrumento Particular compra e venda de veículo automotor, pelas seguintes cláusulas:</p>
+
+    <div class="section-title">DO OBJETO</div>
+
+    <p><span class="clause-title">CLÁUSULA PRIMEIRA:</span> A San Marino adquire, nesse ato, o veículo da marca FIAT modelo:
+      <span class="editable-field" contenteditable="true">VEICULO_MODELO</span>, ano de fabricação e modelo
+      <span class="editable-field" contenteditable="true">VEICULO_ANO_FABRICACAO</span>/<span class="editable-field" contenteditable="true">VEICULO_ANO_MODELO</span>, placas:
+      <span class="editable-field" contenteditable="true">VEICULO_PLACAS</span> e com aproximadamente
+      <span class="editable-field" contenteditable="true">VEICULO_KM</span> km rodados, de propriedade do(a) VENDEDOR(A).
+    </p>
+
+    <p class="indent"><strong>Parágrafo Único:</strong> O(a) VENDEDOR(A) permanece responsável por eventuais efeitos da evicção.</p>
+
+    <div class="section-title">DO VALOR E DA FORMA DE PAGAMENTO</div>
+
+    <p><span class="clause-title">CLÁUSULA SEGUNDA:</span> As Partes contratam e estipulam, de forma certa, o valor do veículo descrito na cláusula anterior como sendo o de R$:
+      <span class="editable-field" contenteditable="true">VEICULO_VALOR</span>.
+    </p>
+
+    <p><span class="clause-title">CLÁUSULA TERCEIRA:</span> A San Marino pagará ao (à) VENDEDOR(A) o preço ajustado mediante transferência bancária, em conta bancária de sua titularidade, no Banco:
+      <span class="editable-field" contenteditable="true">BANCO_NOME</span>, da Agencia:
+      <span class="editable-field" contenteditable="true">BANCO_AGENCIA</span>, tipo corrente e registrada sob o nº:
+      <span class="editable-field" contenteditable="true">CONTA_NUMERO</span>, Chave Pix:
+      <span class="editable-field" contenteditable="true">CHAVE_PIX</span>.
+    </p>
+
+    <p class="indent"><strong>Parágrafo Primeiro:</strong> A San Marino, desde já, está autorizada a realizar qualquer desconto necessário em face do valor de avaliação, podendo transferir, apenas, o saldo da operação. Dessa forma, o pagamento somente ocorrerá dez dias úteis após a eventual quitação das seguintes obrigações: contrato de financiamento ainda incidente; baixa de grave ou restrição veicular; multas por infração de trânsito lançadas no registro veicular e não liquidadas; licenciamento anual veicular; ou qualquer outro débito, registro, averbação etc. que reduza, impeça ou atrase a plena transferência, posse e propriedade do veículo.</p>
+
+    <p class="indent"><strong>Parágrafo Segundo:</strong> Eventualmente, também poderá exigir o ressarcimento de despesas, quando o saldo da operação for insuficiente. Da mesma forma, poderá exigir todo e qualquer ressarcimento de despesas que ocorra em momento posterior a liquidação deste instrumento.</p>
+
+    <p><span class="clause-title">CLÁUSULA QUARTA:</span> As Partes têm por certo que o veículo em objeto deverá ser entregue à San Marino até o dia
+      <span class="editable-field" contenteditable="true">ENTREGA_DIA</span> do mês de
+      <span class="editable-field" contenteditable="true">ENTREGA_MES</span> do ano de
+      <span class="editable-field" contenteditable="true">ENTREGA_ANO</span>, sem prejuízo de uma data anterior.
+    </p>
+
+    <div class="page-break-force"></div>
+
+    <div class="section-title">DAS RESPONSABILIDADES</div>
+
+    <p><span class="clause-title">CLÁUSULA QUINTA:</span> O(a) VENDEDOR(A) declara-se responsável por qualquer eventual restrição ou ônus financeiro que recaia sobre o veículo, originário de algum procedimento administrativo ou judicial, em que seja parte.</p>
+
+    <p class="indent"><strong>Parágrafo Primeiro:</strong> O(a) VENDEDOR(A) declara, também, que, em caso de recair qualquer tipo ônus ou restrição (seja judicial ou administrativa), sobre o veículo em objeto, providenciará as liberações pertinentes, no prazo de três dias úteis, sob pena de arcar com perdas e danos em favor da San Marino e multa contratual de 10% sobre o valor recebido pelo bem em objeto, além demais cominações legais.</p>
+
+    <p class="indent"><strong>Parágrafo Segundo:</strong> O(a) VENDEDOR(A) declara-se, ainda, responsável cível, penal e administrativamente sobre o veículo em objeto da presente transação, até a sua efetiva entrega.</p>
+
+    <p class="indent"><strong>Parágrafo Terceiro:</strong> O(a) VENDEDOR(A) compromete-se em assinar, retificar ou ratificar todo e qualquer documento necessário para a conclusão deste negócio e plena transferência do veículo em objeto, sob pena de ser responsabilizado por eventuais perdas e danos.</p>
+
+    <p><span class="clause-title">CLÁUSULA SEXTA:</span> O(a) VENDEDOR(A) declara que concorda com o tratamento de seus dados para esta finalidade específica, em conformidade com a Lei 13.709/18, bem como ciência da necessária reprodução e compartilhamento com qualquer interessado relacionado ao objeto deste instrumento.</p>
+
+    <p>E, por estarem justos e acordados os termos supracitados, firmam as Partes este instrumento em 2 (duas) vias, do mesmo teor e para um mesmo efeito, juntamente com as testemunhas abaixo.</p>
+
+    <p><span class="editable-field" contenteditable="true">LOCAL_DATA</span>, <span class="editable-field" contenteditable="true">DIA_ATUAL</span> de <span class="editable-field" contenteditable="true">MES_ATUAL</span> de <span class="editable-field" contenteditable="true">ANO_ATUAL</span>.</p>
+
+    <div class="signature-container">
+      <div class="signature-line">VENDEDOR(A)</div>
+      <div class="signature-line">SAN MARINO VEÍCULOS</div>
+    </div>
+
+    <div class="witness-section">
+      <p>Testemunhas:</p>
+      <div class="witness-container">
+        <div class="witness-box">
+          <div class="witness-line"></div>
+          1. <span class="editable-field" contenteditable="true">TESTEMUNHA1_NOME_CPF</span><br>
+          Nome e cpf:
+        </div>
+        <div class="witness-box">
+          <div class="witness-line"></div>
+          2. <span class="editable-field" contenteditable="true">TESTEMUNHA2_NOME_CPF</span><br>
+          Nome e cpf:
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    async function printContrato() {
+      const originalTitle = document.title;
+      document.title = " ";
+
+      const img = document.getElementById("brandLogo");
+      if (img && !img.complete) {
+        await new Promise(resolve => {
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      }
+
+      setTimeout(() => {
+        window.print();
+        setTimeout(() => { document.title = originalTitle; }, 200);
+      }, 50);
+    }
+  </script>
+</body>
+</html>
