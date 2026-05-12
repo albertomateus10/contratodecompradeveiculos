@@ -155,6 +155,20 @@
       margin-bottom: 5px;
     }
 
+    .witness-signature-wrapper{
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 15px; /* Espaço adicional solicitado */
+    }
+    .witness-signature-wrapper span{
+      margin-bottom: 5px;
+      margin-right: 5px;
+    }
+    .witness-signature-wrapper .witness-line{
+      flex: 1;
+      margin-top: 0; /* Remove o margin-top padrão para alinhar com o número */
+    }
+
     /* 2ª página começa em "DAS RESPONSABILIDADES" */
     .page-break-force{
       page-break-before: always;
@@ -215,7 +229,7 @@
 
     <div class="section-title">DO OBJETO</div>
 
-    <p><span class="clause-title">CLÁUSULA PRIMEIRA:</span> A San Marino adquire, nesse ato, o veículo da marca FIAT modelo:
+    <p><span class="clause-title">CLÁUSULA PRIMEIRA:</span> A San Marino adquire, nesse ato, o veículo da marca: <span class="editable-field" contenteditable="true"></span> modelo:
       <span class="editable-field" contenteditable="true"></span>, ano de fabricação e modelo
       <span class="editable-field" contenteditable="true"></span>/<span class="editable-field" contenteditable="true"></span>, placas:
       <span class="editable-field" contenteditable="true"></span> e com aproximadamente
@@ -274,14 +288,20 @@
       <p>Testemunhas:</p>
       <div class="witness-container">
         <div class="witness-box">
-          <div class="witness-line"></div>
-          1. <span class="editable-field" contenteditable="true"></span><br>
-          Nome e cpf:
+          <div class="witness-signature-wrapper">
+            <span>1.</span>
+            <div class="witness-line"></div>
+          </div>
+          Nome: <span class="editable-field" contenteditable="true"></span><br>
+          CPF: <span class="editable-field" contenteditable="true"></span>
         </div>
         <div class="witness-box">
-          <div class="witness-line"></div>
-          2. <span class="editable-field" contenteditable="true"></span><br>
-          Nome e cpf:
+          <div class="witness-signature-wrapper">
+            <span>2.</span>
+            <div class="witness-line"></div>
+          </div>
+          Nome: <span class="editable-field" contenteditable="true"></span><br>
+          CPF: <span class="editable-field" contenteditable="true"></span>
         </div>
       </div>
     </div>
